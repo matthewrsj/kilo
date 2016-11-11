@@ -1293,15 +1293,23 @@ void initEditor(void) {
 }
 
 /* Dynamic resizing handler */
-void resizeHandler() {
+void sigHandler(int sig) {
     sigset_t mask, prev_mask;
     
     /* TEMPORARY FIX, NOT ASYNC-SAFE */
     sigfillset(&mask);
     sigprocmask(SIG_BLOCK, &mask, &prev_mask);
-    getWindowSize(STDIN_FILENO,STDOUT_FILENO, &E.screenrows,&E.screencols);
-    E.screenrows -= 2; /* Get room for status bar. */
-    editorRefreshScreen();
+    
+    switch (sig) {
+    case SIGWINCH:
+        getWindowSize(STDIN_FILENO,STDOUT_FILENO, &E.screenrows,&E.screencols);
+        E.screenrows -= 2; /* Get room for status bar. */
+        editorRefreshScreen();
+        break;
+    case SIGHUP:
+        if (E.dirty) editorSave();
+        break;
+    }
     sigprocmask(SIG_SETMASK, &prev_mask, NULL);
 }
 
@@ -1318,7 +1326,8 @@ int main(int argc, char **argv) {
     editorSetStatusMessage(
         "HELP: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find");
     
-    signal(SIGWINCH, resizeHandler);
+    signal(SIGWINCH, sigHandler);
+    signal(SIGHUP, sigHandler);
 
     while(1) {
         editorRefreshScreen();
