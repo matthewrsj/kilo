@@ -114,9 +114,11 @@ enum KEY_ACTION{
         CTRL_D = 4,         /* Ctrl-d */
         CTRL_F = 6,         /* Ctrl-f */
         CTRL_H = 8,         /* Ctrl-h */
-        TAB = 9,            /* Tab */
+        TAB    = 9,            /* Tab */
+        CTRL_J = 10,        /* Ctrl-j */
+        CTRL_K = 11,        /* Ctrl-k */
         CTRL_L = 12,        /* Ctrl+l */
-        ENTER = 13,         /* Enter */
+        ENTER  = 13,         /* Enter */
         CTRL_Q = 17,        /* Ctrl-q */
         CTRL_S = 19,        /* Ctrl-s */
         CTRL_U = 21,        /* Ctrl-u */
@@ -172,15 +174,15 @@ char *C_HL_keywords[] = {
 /* python */
 char *PY_HL_extensions[] = {".py","python",NULL};
 char *PY_HL_keywords[] = {
-	"def","if","while","for","break","return","continue","else","elif",
-	"True","False","class","and","as","assert","del","except","except:",
-	"finally","finally:", "from","global","import","in","is","lambda",
-	"nonlocal","not","or","pass","raise","return","try:","try","with",
-	"yeild",
-	/* Python types */
-	"int|","str|","unicode|","dict|","float|","repr|","long|","eval|",
-	"tuple|","list|","set|","frozenset|","chr|","unichr|","ord|","hex|",
-	"oct|","complex|",NULL
+    "def","if","while","for","break","return","continue","else","elif",
+    "True","False","class","and","as","assert","del","except","except:",
+    "finally","finally:", "from","global","import","in","is","lambda",
+    "nonlocal","not","or","pass","raise","return","try:","try","with",
+    "yeild",
+    /* Python types */
+    "int|","str|","unicode|","dict|","float|","repr|","long|","eval|",
+    "tuple|","list|","set|","frozenset|","chr|","unichr|","ord|","hex|",
+    "oct|","complex|",NULL
 };
 
 /* Here we define an array of syntax highlights by extensions, keywords,
@@ -1162,6 +1164,12 @@ void editorMoveCursor(int key) {
             }
         }
         break;
+    case CTRL_J:
+        E.cx = 0;
+        break;
+    case CTRL_K:
+        E.cx = E.screencols-1;
+        break;
     }
     /* Fix cx if the current line has not enough chars. */
     filerow = E.rowoff+E.cy;
@@ -1230,6 +1238,9 @@ void editorProcessKeypress(int fd) {
         }
         break;
 
+    case CTRL_K:
+    case CTRL_J:
+    
     case ARROW_UP:
     case ARROW_DOWN:
     case ARROW_LEFT:
