@@ -153,7 +153,7 @@ char *C_HL_keywords[] = {
         "void|","uint32_t|","uint64_t|",NULL
 };
 
-/* python */
+/* Python */
 char *PY_HL_extensions[] = {".py","python",NULL};
 char *PY_HL_keywords[] = {
        "def","if","while","for","break","return","continue","else","elif",
