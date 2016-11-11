@@ -50,6 +50,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <fcntl.h>
+#include <signal.h>
 
 /* Syntax highlight types */
 #define HL_NORMAL 0
@@ -1291,6 +1292,12 @@ void initEditor(void) {
     E.screenrows -= 2; /* Get room for status bar. */
 }
 
+void resizeHandler() {
+    /* TEMPORARY FIX, NOT ASYNC-SAFE */
+    getWindowSize(STDIN_FILENO,STDOUT_FILENO, &E.screenrows,&E.screencols);
+    editorRefreshScreen();
+}
+
 int main(int argc, char **argv) {
     if (argc != 2) {
         fprintf(stderr,"Usage: kilo <filename>\n");
@@ -1303,6 +1310,9 @@ int main(int argc, char **argv) {
     enableRawMode(STDIN_FILENO);
     editorSetStatusMessage(
         "HELP: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find");
+    
+    signal(SIGWINCH, resizeHandler);
+
     while(1) {
         editorRefreshScreen();
         editorProcessKeypress(STDIN_FILENO);
