@@ -153,7 +153,7 @@ char *C_HL_keywords[] = {
         "void|","uint32_t|","uint64_t|",NULL
 };
 
-/* python */
+/* Python */
 char *PY_HL_extensions[] = {".py","python",NULL};
 char *PY_HL_keywords[] = {
        "def","if","while","for","break","return","continue","else","elif",
@@ -167,6 +167,19 @@ char *PY_HL_keywords[] = {
        "oct|","complex|",NULL
 };
 
+/* Java */
+char *J_HL_extensions[] = {".java",NULL};
+char *J_HL_keywords[] = {
+        "abstract","assert","break","case","catch","class","const","continue",
+        "default","do","else","enum","extends","final","finally","for","goto",
+        "if","implements","import","instanceof","interface","native","new",
+        "package","private","protected","public","return","static","strictfp",
+        "super","switch","synchronized","this","throw","throws","transient",
+        "try","void","volatile","while",
+        /* Java types */
+        "boolean","byte","char","double","float","int","long","short",NULL
+};
+
 /* Here we define an array of syntax highlights by extensions, keywords,
  * comments delimiters and flags. */
 struct editorSyntax HLDB[] = {
@@ -178,9 +191,17 @@ struct editorSyntax HLDB[] = {
         HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
     },
     {
+        /* Python */
         PY_HL_extensions,
         PY_HL_keywords,
         "#","\"\"\"", "\"\"\"",
+        HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
+    },
+    {
+        /* Java */
+        J_HL_extensions,
+        J_HL_keywords,
+        "//","/*","*/",
         HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
     }
 };
