@@ -177,7 +177,7 @@ char *J_HL_keywords[] = {
         "super","switch","synchronized","this","throw","throws","transient",
         "try","void","volatile","while",
         /* Java types */
-        "boolean","byte","char","double","float","int","long","short",NULL
+        "boolean|","byte|","char|","double|","float|","int|","long|","short|",NULL
 };
 
 /* Here we define an array of syntax highlights by extensions, keywords,
