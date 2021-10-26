@@ -181,6 +181,18 @@ char *J_HL_keywords[] = {
         "boolean|","byte|","char|","double|","float|","int|","long|","short|",NULL
 };
 
+/* Golang */
+char *GOLANG_HL_extensions[] = {".go",NULL};
+char *GOLANG_HL_keywords[] = {
+	"break","case","chan","const","continue","default","defer","else","fallthrough",
+	"for","func","go","goto","if","import","interface","map","package","range",
+	"return","select","struct","switch","type","var",
+	/* Golang types */
+	"uint8|","uint16|","uint32|","uint64|","int8|","int16|","int32|","int64|",
+	"float32|","float64|","complex64|","complex128|","byte|","rune|","uint|","int|",
+	"uintptr|","string|","bool|","chan|",NULL
+};
+
 /* Here we define an array of syntax highlights by extensions, keywords,
  * comments delimiters and flags. */
 struct editorSyntax HLDB[] = {
@@ -202,6 +214,13 @@ struct editorSyntax HLDB[] = {
         /* Java */
         J_HL_extensions,
         J_HL_keywords,
+        "//","/*","*/",
+        HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
+    },
+    {
+        /* Golang */
+        GOLANG_HL_extensions,
+        GOLANG_HL_keywords,
         "//","/*","*/",
         HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
     }
