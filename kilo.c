@@ -424,7 +424,7 @@ void editorUpdateSyntax(erow *row) {
         /* Handle // comments. */
         if (prev_sep && *p == scs[0] && *(p+1) == scs[1]) {
             /* From here to end is a comment */
-            memset(row->hl+i,HL_COMMENT,row->size-i);
+            memset(row->hl+i,HL_COMMENT,row->size);
             return;
         }
 
@@ -532,12 +532,12 @@ void editorUpdateSyntax(erow *row) {
 int editorSyntaxToColor(int hl) {
     switch(hl) {
     case HL_COMMENT:
-    case HL_MLCOMMENT: return 36;     /* cyan */
+    case HL_MLCOMMENT: return 36;   /* cyan */
     case HL_KEYWORD1: return 33;    /* yellow */
     case HL_KEYWORD2: return 32;    /* green */
     case HL_STRING: return 35;      /* magenta */
     case HL_NUMBER: return 31;      /* red */
-    case HL_MATCH: return 34;      /* blu */
+    case HL_MATCH: return 34;       /* blue */
     default: return 37;             /* white */
     }
 }
