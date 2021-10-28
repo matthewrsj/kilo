@@ -157,26 +157,18 @@ char *C_HL_keywords[] = {
 /* Python */
 char *PY_HL_extensions[] = {".py","python",NULL};
 char *PY_HL_keywords[] = {
-       "def","if","while","for","break","return","continue","else","elif",
-       "True","False","class","and","as","assert","del","except","except:",
-       "finally","finally:", "from","global","import","in","is","lambda",
-       "nonlocal","not","or","pass","raise","return","try:","try","with",
-       "yeild",
+       "def","if","while","for","break","return","continue","else","elif", "True","False","class","and","as","assert","del","except","except:",
+       "finally","finally:", "from","global","import","in","is","lambda", "nonlocal","not","or","pass","raise","return","try:","try","with", "yeild",
        /* Python types */
-       "int|","str|","unicode|","dict|","float|","repr|","long|","eval|",
-       "tuple|","list|","set|","frozenset|","chr|","unichr|","ord|","hex|",
-       "oct|","complex|",NULL
+       "int|","str|","unicode|","dict|","float|","repr|","long|","eval|", "tuple|","list|","set|","frozenset|","chr|","unichr|","ord|","hex|", "oct|","complex|",NULL
 };
 
 /* Java */
 char *J_HL_extensions[] = {".java",NULL};
 char *J_HL_keywords[] = {
-        "abstract","assert","break","case","catch","class","const","continue",
-        "default","do","else","enum","extends","final","finally","for","goto",
-        "if","implements","import","instanceof","interface","native","new",
-        "package","private","protected","public","return","static","strictfp",
-        "super","switch","synchronized","this","throw","throws","transient",
-        "try","void","volatile","while",
+        "abstract","assert","break","case","catch","class","const","continue", "default","do","else","enum","extends","final","finally","for","goto",
+        "if","implements","import","instanceof","interface","native","new", "package","private","protected","public","return","static","strictfp",
+        "super","switch","synchronized","this","throw","throws","transient", "try","void","volatile","while",
         /* Java types */
         "boolean|","byte|","char|","double|","float|","int|","long|","short|",NULL
 };
@@ -184,12 +176,10 @@ char *J_HL_keywords[] = {
 /* Golang */
 char *GOLANG_HL_extensions[] = {".go",NULL};
 char *GOLANG_HL_keywords[] = {
-	"break","case","chan","const","continue","default","defer","else","fallthrough",
-	"for","func","go","goto","if","import","interface","map","package","range",
+	"break","case","chan","const","continue","default","defer","else","fallthrough", "for","func","go","goto","if","import","interface","map","package","range",
 	"return","select","struct","switch","type","var",
 	/* Golang types */
-	"uint8|","uint16|","uint32|","uint64|","int8|","int16|","int32|","int64|",
-	"float32|","float64|","complex64|","complex128|","byte|","rune|","uint|","int|",
+	"uint8|","uint16|","uint32|","uint64|","int8|","int16|","int32|","int64|", "float32|","float64|","complex64|","complex128|","byte|","rune|","uint|","int|",
 	"uintptr|","string|","bool|","chan|",NULL
 };
 
@@ -198,29 +188,25 @@ char *GOLANG_HL_keywords[] = {
 struct editorSyntax HLDB[] = {
     {
         /* C / C++ */
-        C_HL_extensions,
-        C_HL_keywords,
+        C_HL_extensions, C_HL_keywords,
         "//","/*","*/",
         HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
     },
     {
         /* Python */
-        PY_HL_extensions,
-        PY_HL_keywords,
+        PY_HL_extensions, PY_HL_keywords,
         "#","\"\"\"", "\"\"\"",
         HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
     },
     {
         /* Java */
-        J_HL_extensions,
-        J_HL_keywords,
+        J_HL_extensions, J_HL_keywords,
         "//","/*","*/",
         HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
     },
     {
         /* Golang */
-        GOLANG_HL_extensions,
-        GOLANG_HL_keywords,
+        GOLANG_HL_extensions, GOLANG_HL_keywords,
         "//","/*","*/",
         HL_HIGHLIGHT_STRINGS | HL_HIGHLIGHT_NUMBERS
     }
@@ -291,8 +277,7 @@ int editorReadKey(int fd) {
         switch(c) {
         case ESC:    /* escape sequence */
             /* If this is just an ESC, we'll timeout here. */
-            if (read(fd,seq,1) == 0) return ESC;
-            if (read(fd,seq+1,1) == 0) return ESC;
+            if ((read(fd,seq,1) == 0) || (read(fd,seq+1,1) == 0)) return ESC;
 
             /* ESC [ sequences. */
             if (seq[0] == '[') {
@@ -344,15 +329,13 @@ int getCursorPosition(int ifd, int ofd, int *rows, int *cols) {
 
     /* Read the response: ESC [ rows ; cols R */
     while (i < sizeof(buf)-1) {
-        if (read(ifd,buf+i,1) != 1) break;
-        if (buf[i] == 'R') break;
+        if ((read(ifd,buf+i,1) != 1) || (buf[i] == 'R')) break;
         i++;
     }
     buf[i] = '\0';
 
     /* Parse it. */
-    if (buf[0] != ESC || buf[1] != '[') return -1;
-    if (sscanf(buf+2,"%d;%d",rows,cols) != 2) return -1;
+    if ((buf[0] != ESC || buf[1] != '[') || (sscanf(buf+2,"%d;%d",rows,cols) != 2)) return -1;
     return 0;
 }
 
