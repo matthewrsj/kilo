@@ -221,6 +221,7 @@ static struct termios orig_termios; /* In order to restore at exit.*/
 void disableRawMode(int fd) {
     /* Don't even check the return value as it's too late. */
     if (E.rawmode) {
+        write(fd,"\x1b[?1049l",8); /* Exit alternate screen buffer. */
         tcsetattr(fd,TCSAFLUSH,&orig_termios);
         E.rawmode = 0;
     }
@@ -1220,7 +1221,6 @@ void editorProcessKeypress(int fd) {
             quit_times--;
             return;
         }
-        system("/usr/bin/clear");
         exit(0);
         break;
     case CTRL_S:        /* Ctrl-s */
@@ -1317,6 +1317,7 @@ int main(int argc, char **argv) {
     editorSelectSyntaxHighlight(argv[1]);
     editorOpen(argv[1]);
     enableRawMode(STDIN_FILENO);
+    write(STDOUT_FILENO,"\x1b[?1049h",8); /* Enter alternate screen buffer. */
     editorSetStatusMessage(
         "HELP: Ctrl-S = save | Ctrl-Q = quit | Ctrl-F = find");
     
